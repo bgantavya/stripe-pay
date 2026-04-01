@@ -44,7 +44,7 @@ const buildPath = path.join(__dirname, '../../frontend/build');
 app.use(express.static(buildPath));
 
 // Handle React Router - serve index.html for all non-API routes
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
 
