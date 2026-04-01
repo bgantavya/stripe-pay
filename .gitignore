@@ -1,9 +1,10 @@
 # Dependencies
 node_modules/
 
-# Production builds
+# Production builds (except for backend deployment)
 frontend/build/
 backend/dist/
+!backend/frontend/build/
 
 # Environment files
 .env
