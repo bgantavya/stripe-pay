@@ -40,7 +40,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve frontend static files
-const buildPath = path.join(__dirname, '../../frontend/build');
+const buildPath = path.join(__dirname, './frontend/build');
 app.use(express.static(buildPath));
 
 // Handle React Router - serve index.html for all non-API routes

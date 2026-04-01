@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "tsc",
+    "build:frontend": "cd ../frontend && npm install && npm run build && cp -r build ../backend/frontend/build",
+    "build": "npm run build:frontend && tsc",
     "start": "node dist/index.js",
     "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
