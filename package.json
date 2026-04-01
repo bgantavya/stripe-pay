@@ -1,0 +1,15 @@
+{
+  "name": "invoice-payment-system",
+  "version": "1.0.0",
+  "description": "Invoice Payment System with Stripe Integration",
+  "scripts": {
+    "build": "cd backend && npm install && npm run build && cd ../frontend && npm install && npm run build",
+    "start": "cd backend && npm start",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\""
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["invoice", "payment", "stripe"],
+  "license": "ISC"
+}
