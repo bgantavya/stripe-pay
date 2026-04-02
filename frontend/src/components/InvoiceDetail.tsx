@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Invoice } from '../types/invoice';
-import { api, transformInvoice } from '../services/api';
+import { api } from '../services/api';
 
 interface InvoiceDetailProps {
   invoiceId: string;
@@ -49,22 +49,9 @@ const InvoiceDetail: React.FC<InvoiceDetailProps> = ({ invoiceId, onBack }) => {
       setInvoice(publishedInvoice);
 
       // Then create payment link
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/payments/create-link`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ invoiceId }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setPaymentLink(data.paymentLink);
-        setInvoice(transformInvoice(data.invoice));
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        setError(errorData.error || 'Failed to create payment link');
-      }
+      const data = await api.createPaymentLink(invoiceId);
+      setPaymentLink(data.paymentLink);
+      setInvoice(data.invoice);
     } catch (err) {
       setError('Failed to publish invoice or create payment link');
     } finally {

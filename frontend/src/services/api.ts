@@ -82,4 +82,23 @@ export const api = {
     const data = await response.json();
     return transformInvoice(data);
   },
+
+  async createPaymentLink(invoiceId: string): Promise<{ paymentLink: string; invoice: Invoice }> {
+    const response = await fetch(`${API_BASE_URL}/payments/create-link`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ invoiceId }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Failed to create payment link');
+    }
+    const data = await response.json();
+    return {
+      paymentLink: data.paymentLink,
+      invoice: transformInvoice(data.invoice),
+    };
+  },
 };
