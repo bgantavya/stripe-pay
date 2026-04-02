@@ -1,6 +1,6 @@
 import { Invoice, CreateInvoiceRequest } from '../types/invoice';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || '/api';
 
 // Transform snake_case to camelCase for frontend
 export const transformInvoice = (data: any): Invoice => ({
