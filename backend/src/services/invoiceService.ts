@@ -12,7 +12,7 @@ export class InvoiceService {
                  'description', ii.description,
                  'quantity', ii.quantity,
                  'unitPrice', ii.unit_price,
-                 'totalPrice', ii.total_price
+                 'totalPrice', (ii.quantity * ii.unit_price)
                )
              ) as items
       FROM invoices i
@@ -34,7 +34,7 @@ export class InvoiceService {
                  'description', ii.description,
                  'quantity', ii.quantity,
                  'unitPrice', ii.unit_price,
-                 'totalPrice', ii.total_price
+                 'totalPrice', (ii.quantity * ii.unit_price)
                )
              ) as items
       FROM invoices i
