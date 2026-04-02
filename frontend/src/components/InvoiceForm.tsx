@@ -160,12 +160,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSuccess, onCancel }) => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="usd">USD ($)</option>
-                <option value="eur">EUR (€)</option>
-                <option value="gbp">GBP (£)</option>
                 <option value="inr">INR (₹)</option>
-                <option value="jpy">JPY (¥)</option>
-                <option value="cad">CAD (C$)</option>
-                <option value="aud">AUD (A$)</option>
               </select>
             </div>
           </div>
