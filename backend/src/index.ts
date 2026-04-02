@@ -13,10 +13,11 @@ import paymentRoutes from './routes/payment';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS - allow all for separate frontend deployment
+// CORS - allow all origins
 app.use(cors({
-  origin: true,
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(helmet());
