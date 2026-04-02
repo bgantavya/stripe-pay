@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Invoice } from '../types/invoice';
 import { api } from '../services/api';
+import { formatAmount } from '../utils/currency';
 
 interface DashboardProps {
   onViewInvoice: (id: string) => void;
@@ -104,7 +105,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onViewInvoice }) => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <p className="text-sm text-gray-900">${invoice.totalAmount.toFixed(2)}</p>
+                      <p className="text-sm text-gray-900">{formatAmount(invoice.totalAmount, invoice.currency)}</p>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <p className="text-sm text-gray-900">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Invoice } from '../types/invoice';
 import { api } from '../services/api';
+import { formatAmount } from '../utils/currency';
 
 interface InvoiceDetailProps {
   invoiceId: string;
@@ -191,8 +192,8 @@ const InvoiceDetail: React.FC<InvoiceDetailProps> = ({ invoiceId, onBack }) => {
                   <tr key={item.id}>
                     <td className="px-4 py-3 text-sm text-gray-900">{item.description}</td>
                     <td className="px-4 py-3 text-sm text-gray-900">{item.quantity}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">${item.unitPrice.toFixed(2)}</td>
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">${item.totalPrice.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-sm text-gray-900">{formatAmount(item.unitPrice, invoice.currency)}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900">{formatAmount(item.totalPrice, invoice.currency)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -201,7 +202,7 @@ const InvoiceDetail: React.FC<InvoiceDetailProps> = ({ invoiceId, onBack }) => {
           <div className="mt-4 flex justify-end">
             <div className="text-right">
               <p className="text-sm text-gray-500">Total Amount</p>
-              <p className="text-2xl font-bold text-gray-900">${invoice.totalAmount.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-gray-900">{formatAmount(invoice.totalAmount, invoice.currency)}</p>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../services/api';
+import { getCurrencySymbol } from '../utils/currency';
 
 interface InvoiceFormProps {
   onSuccess: () => void;
@@ -218,7 +219,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSuccess, onCancel }) => {
                 </div>
                 <div className="w-24">
                   <label className="block text-xs font-medium text-gray-600 mb-1">Total</label>
-                  <p className="text-sm font-medium py-2">${(item.quantity * item.unitPrice).toFixed(2)}</p>
+                  <p className="text-sm font-medium py-2">{getCurrencySymbol(formData.currency)}{(item.quantity * item.unitPrice).toFixed(2)}</p>
                 </div>
                 {items.length > 1 && (
                   <button
@@ -237,7 +238,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSuccess, onCancel }) => {
             <div className="flex justify-end">
               <div className="text-right">
                 <p className="text-sm text-gray-600">Total Amount</p>
-                <p className="text-2xl font-bold text-gray-900">${calculateTotal().toFixed(2)}</p>
+                <p className="text-2xl font-bold text-gray-900">{getCurrencySymbol(formData.currency)}{calculateTotal().toFixed(2)}</p>
               </div>
             </div>
           </div>
