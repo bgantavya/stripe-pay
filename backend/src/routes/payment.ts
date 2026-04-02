@@ -27,7 +27,7 @@ router.post('/create-link', async (req, res) => {
     const paymentLink = await stripe.paymentLinks.create({
       line_items: invoice.items.map((item: any) => ({
         price_data: {
-          currency: 'usd',
+          currency: invoice.currency || 'usd',
           product_data: {
             name: item.description,
           },

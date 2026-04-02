@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS invoices (
     client_address TEXT NOT NULL,
     due_date DATE NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'paid')),
+    currency VARCHAR(3) NOT NULL DEFAULT 'usd',
     total_amount DECIMAL(10, 2) NOT NULL,
     stripe_payment_link_id VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

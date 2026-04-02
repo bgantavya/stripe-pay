@@ -14,6 +14,7 @@ export interface Invoice {
   client_address: string;
   due_date: string;
   status: 'draft' | 'published' | 'paid';
+  currency: string;
   total_amount: number;
   stripe_payment_link_id?: string;
   stripe_payment_url?: string;
@@ -27,6 +28,7 @@ export interface CreateInvoiceRequest {
   client_email: string;
   client_address: string;
   due_date: string;
+  currency: string;
   items: {
     description: string;
     quantity: number;

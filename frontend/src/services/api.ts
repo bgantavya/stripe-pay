@@ -10,6 +10,7 @@ export const transformInvoice = (data: any): Invoice => ({
   clientAddress: data.client_address,
   dueDate: data.due_date,
   status: data.status,
+  currency: data.currency || 'usd',
   totalAmount: parseFloat(data.total_amount) || 0,
   stripePaymentLinkId: data.stripe_payment_link_id,
   stripePaymentUrl: data.stripe_payment_url,
@@ -50,6 +51,7 @@ export const api = {
       client_email: invoice.clientEmail,
       client_address: invoice.clientAddress,
       due_date: invoice.dueDate,
+      currency: invoice.currency,
       items: invoice.items.map(item => ({
         description: item.description,
         quantity: item.quantity,

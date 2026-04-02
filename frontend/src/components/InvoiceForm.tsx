@@ -18,6 +18,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSuccess, onCancel }) => {
     clientEmail: '',
     clientAddress: '',
     dueDate: '',
+    currency: 'usd',
   });
   
   const [items, setItems] = useState<InvoiceItem[]>([
@@ -72,6 +73,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSuccess, onCancel }) => {
         clientEmail: formData.clientEmail,
         clientAddress: formData.clientAddress,
         dueDate: formData.dueDate,
+        currency: formData.currency,
         items: items
       });
 
@@ -147,6 +149,24 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSuccess, onCancel }) => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Currency
+              </label>
+              <select
+                value={formData.currency}
+                onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="usd">USD ($)</option>
+                <option value="eur">EUR (€)</option>
+                <option value="gbp">GBP (£)</option>
+                <option value="inr">INR (₹)</option>
+                <option value="jpy">JPY (¥)</option>
+                <option value="cad">CAD (C$)</option>
+                <option value="aud">AUD (A$)</option>
+              </select>
             </div>
           </div>
         </div>

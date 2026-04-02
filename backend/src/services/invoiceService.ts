@@ -61,8 +61,8 @@ export class InvoiceService {
       
       // Insert invoice
       const invoiceQuery = `
-        INSERT INTO invoices (client_name, client_email, client_address, due_date, total_amount)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO invoices (client_name, client_email, client_address, due_date, currency, total_amount)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *
       `;
       const invoiceResult = await client.query(invoiceQuery, [
@@ -70,6 +70,7 @@ export class InvoiceService {
         invoiceData.client_email,
         invoiceData.client_address,
         invoiceData.due_date,
+        invoiceData.currency,
         totalAmount
       ]);
       

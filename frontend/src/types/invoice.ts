@@ -13,6 +13,7 @@ export interface Invoice {
   clientAddress: string;
   dueDate: string;
   status: 'draft' | 'published' | 'paid';
+  currency: string;
   totalAmount: number;
   stripePaymentLinkId?: string;
   stripePaymentUrl?: string;
@@ -26,5 +27,6 @@ export interface CreateInvoiceRequest {
   clientEmail: string;
   clientAddress: string;
   dueDate: string;
+  currency: string;
   items: Omit<InvoiceItem, 'id' | 'totalPrice'>[];
 }
