@@ -73,8 +73,13 @@ router.post('/create-link', async (req, res) => {
       },
       custom_text: {
         submit: {
-          message: `Thank you for your business, ${invoice.client_name}!`,
+          message: `Thank you for your business with Devslane, ${invoice.client_name}!`,
         },
+      },
+      payment_intent_data: {
+        description: `Devslane Invoice DL-${invoice.id.slice(0, 8).toUpperCase()}`,
+        statement_descriptor: 'DEVSLANE INVOICE',
+        statement_descriptor_suffix: `DL${invoice.id.slice(0, 6).toUpperCase()}`,
       },
     });
     
