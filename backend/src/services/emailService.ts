@@ -9,7 +9,10 @@ const getCurrencySymbol = (currency: string): string => {
   }
 };
 
-const formatAmount = (amount: number, currency: string): string => {
+const formatAmount = (amount: number | undefined, currency: string): string => {
+  if (amount === undefined || amount === null || isNaN(amount)) {
+    return `${getCurrencySymbol(currency)}0.00`;
+  }
   return `${getCurrencySymbol(currency)}${amount.toFixed(2)}`;
 };
 
@@ -67,12 +70,12 @@ class EmailService {
     const invoiceNumber = `DL-${invoice.id.slice(0, 8).toUpperCase()}`;
     const subject = `🧾 Invoice ${invoiceNumber} from Devslane - Payment Required`;
     
-    const itemsHtml = invoice.items.map(item => `
+    const itemsHtml = invoice.items.map((item: any) => `
       <tr style="border-bottom: 1px solid #eee;">
         <td style="padding: 12px; text-align: left;">${item.description}</td>
         <td style="padding: 12px; text-align: center;">${item.quantity}</td>
-        <td style="padding: 12px; text-align: right;">${formatAmount(item.unit_price, invoice.currency)}</td>
-        <td style="padding: 12px; text-align: right; font-weight: bold;">${formatAmount(item.total_price, invoice.currency)}</td>
+        <td style="padding: 12px; text-align: right;">${formatAmount(item.unitPrice || item.unit_price, invoice.currency)}</td>
+        <td style="padding: 12px; text-align: right; font-weight: bold;">${formatAmount(item.totalPrice || item.total_price, invoice.currency)}</td>
       </tr>
     `).join('');
 
@@ -145,10 +148,10 @@ class EmailService {
     const invoiceNumber = `DL-${invoice.id.slice(0, 8).toUpperCase()}`;
     const subject = `✅ Payment Confirmed - Invoice ${invoiceNumber} from Devslane`;
 
-    const itemsHtml = invoice.items.map(item => `
+    const itemsHtml = invoice.items.map((item: any) => `
       <tr style="border-bottom: 1px solid #eee;">
         <td style="padding: 12px; text-align: left;">${item.description}</td>
-        <td style="padding: 12px; text-align: right; font-weight: bold;">${formatAmount(item.total_price, invoice.currency)}</td>
+        <td style="padding: 12px; text-align: right; font-weight: bold;">${formatAmount(item.totalPrice || item.total_price, invoice.currency)}</td>
       </tr>
     `).join('');
 
