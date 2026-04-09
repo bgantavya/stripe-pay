@@ -1,6 +1,7 @@
 import express from 'express';
 import Stripe from 'stripe';
 import { InvoiceService } from '../services/invoiceService';
+import { emailService } from '../services/emailService';
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -85,6 +86,16 @@ router.post('/create-link', async (req, res) => {
       paymentLink.url
     );
     
+    // Send invoice published email to client
+    if (updatedInvoice) {
+      try {
+        await emailService.sendInvoicePublishedEmail(updatedInvoice, paymentLink.url);
+      } catch (emailError) {
+        console.error('Failed to send invoice email:', emailError);
+        // Don't fail the request if email fails
+      }
+    }
+    
     res.json({
       paymentLink: paymentLink.url,
       paymentLinkId: paymentLink.id,
@@ -131,8 +142,18 @@ router.post('/webhook', async (req, res) => {
           const invoice = invoices.find(inv => inv.stripe_payment_link_id === paymentLinkId);
           
           if (invoice) {
-            await invoiceService.updateInvoiceStatus(invoice.id, 'paid');
+            const paidInvoice = await invoiceService.updateInvoiceStatus(invoice.id, 'paid');
             console.log(`Invoice ${invoice.id} marked as paid`);
+            
+            // Send payment confirmation email
+            if (paidInvoice) {
+              try {
+                await emailService.sendPaymentConfirmationEmail(paidInvoice);
+                console.log(`Payment confirmation email sent to ${invoice.client_email}`);
+              } catch (emailError) {
+                console.error('Failed to send payment confirmation email:', emailError);
+              }
+            }
             
             // Deactivate the payment link so it can't be used again
             try {
