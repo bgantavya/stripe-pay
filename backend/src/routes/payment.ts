@@ -23,18 +23,26 @@ router.post('/create-link', async (req, res) => {
       return res.status(400).json({ error: 'Only draft or published invoices can generate payment links' });
     }
     
-    // Create Stripe payment link
-    const paymentLink = await stripe.paymentLinks.create({
-      line_items: invoice.items.map((item: any) => ({
-        price_data: {
-          currency: invoice.currency || 'usd',
-          product_data: {
-            name: item.description,
+    // Prepare line items with detailed descriptions
+    const lineItems = invoice.items.map((item: any, index: number) => ({
+      price_data: {
+        currency: invoice.currency || 'usd',
+        product_data: {
+          name: item.description,
+          description: `Invoice #${invoice.id.slice(0, 8).toUpperCase()} - Item ${index + 1}`,
+          metadata: {
+            invoice_id: invoice.id,
+            item_index: String(index),
           },
-          unit_amount: Math.round(item.unitPrice * 100), // Convert to cents
         },
-        quantity: item.quantity,
-      })),
+        unit_amount: Math.round(item.unitPrice * 100),
+      },
+      quantity: item.quantity,
+    }));
+
+    // Create Stripe payment link with personalized details
+    const paymentLink = await stripe.paymentLinks.create({
+      line_items: lineItems,
       after_completion: {
         type: 'redirect',
         redirect: {
@@ -43,6 +51,30 @@ router.post('/create-link', async (req, res) => {
       },
       allow_promotion_codes: false,
       billing_address_collection: 'auto',
+      customer_creation: 'always',
+      invoice_creation: {
+        enabled: true,
+        invoice_data: {
+          description: `Invoice for ${invoice.client_name}`,
+          metadata: {
+            invoice_id: invoice.id,
+            client_email: invoice.client_email,
+            client_name: invoice.client_name,
+          },
+        },
+      },
+      metadata: {
+        invoice_id: invoice.id,
+        client_email: invoice.client_email,
+        client_name: invoice.client_name,
+        total_amount: String(invoice.total_amount),
+        currency: invoice.currency || 'usd',
+      },
+      custom_text: {
+        submit: {
+          message: `Thank you for your business, ${invoice.client_name}!`,
+        },
+      },
     });
     
     // Update invoice with payment link ID and status
